@@ -63,10 +63,20 @@ WSGI_APPLICATION = "project_gis2.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
+# リスト4-2:projcct_gis/settings.py。4.3.2 ユーザモデルのデータベース移行、(1)手順1:PostgreSQLの使用設定
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE":"django.db.backends.postgresql",
+        "NAME":"project_gis_db",
+        "USER":"taka648",
+        "PASSWORD":"Akie2Suzuki", 
+        "PORT":"5432", 
     }
 }
 

@@ -8,6 +8,8 @@ urlpatterns = [
    path("", views.index, name="index"),
    # リスト3-6:追加
    path("mypage/", views.mypage_funView, name="mypage"),
+   # リスト3-14:追加、3.4.3 フォームビュークラスに紐付ける
+   path('frmPublish/', views.frmPublishView.as_view(), name='frmPublish')
 ]
 
 # (2)手順2:ルーティングproject_gis/urls.pyへの追加とdatashare/urls.py(リスト3-3)の新規作成
@@ -33,3 +35,10 @@ urlpatterns = [
 # http://localhost:8000/datashare/mypage/
 # の代わりに定形の「アプリ名」:「ページ名」を使うと、コードの簡潔性と可読性を格段に向上させることになる。
 # 多数のページを有する複雑なアプリケーションにおいては名前空間の利用を勧める。
+
+#【リスト3-14の解説】
+# 　アプリのルーティングurls.pyファイルにおいて、フォーム処理するためのpath()を追加する。
+# リスト3-14の行9のように、関数path()の3つの引数を記述する。
+# URLパターンは'publish/'に、namespaceはname='publish'で設定するが、第2引数はこれまでとやや異なる。
+# 行7と行8は、それぞれviewsの関数indexとmypageを紐付けるために、views.indexとviews.mypageで記述した。
+# 今回のfrmPublishViewは、viewsの関数ではなくクラスであるので、frmPublishView.as_view()の記述でフォーラムクラスと紐付ける。

@@ -1,6 +1,7 @@
-# リスト3-5:datashare/views.py。3.3.2 複数ページのWebアプリのつながり、(1)手順1:views.pyの編集、redirect追加
-# リスト3-1:datashare/views.py。3.3.1 初めてのDjangoアプリの作成、(1)手順1:views.pyの作成
-from django.shortcuts import redirect, render
+from django.shortcuts import render
+# リスト3-13:追加
+from datashare.forms import frmPublish
+from django.views.generic import TemplateView
 
 def index(request):
     parmas = {
@@ -20,28 +21,34 @@ def mypage_funView(request):
     }
     return render(request, "datashare/mypage.html", parmas)
 
-#【リスト3-1の解説】
-# 　関数indexを定義し(行3)、辞書型の変数parmasの中に、titleとmsgの文字情報(行4～行7)をフォルダtemplates/datashareの下にあるindex.htmlファイルヘ返す(行8)。
-# 現段階において、フォルダtemplates/datashareとファイルindex.htmlは存在していないが、後ほど作成する予定である。
-# 　行3にあるdef index(request)は、indexというpython関数を宣言するコードである。引数requestは、クライアント側のリクエスト情報を受け取ることができる。
-# また、行8のreturn render()は、renderという関数を使って、第3引数の変数parmas(行4～行7)をrendering(成形表現)した後、
-# 第2引数のindex.htmlへreturn(返す)ためのコードである。そのため、行1にはDjangoライブラリからrender関数をimportしておく必要がある。
-#【リスト3.5の解説】
-# 　リスト3.5は、リスト3.1をベースに、
-# (1)新たな関数mypage_funView()の追加(行11～行17)、
-# (2)URLの逆引き機能の追加(行7と行15)を行う。
-# 　それを実行すると、図3-15の左のトップページと右の「マイページ」が相互リンクしていることが反映される。
-# 関数index()と関数mypage_funView()の構造上は全く同じであるので、行7と行15の逆引き機能の説明を除き、その他のコードに関する解説は省略する。
-# 　リスト3-5の辞書型変数parmasにおいて、
-# 'goto_mypage':'datashare:mypage'
-# と
-# 'goto_index':'datashare:index'(行7と行15)
-# が追加された。ここで、datashare:mypageとdatashare:indexが示された定形の「アプリ名」:「ページ名」は名前空間(namespace)と呼ぶ。
-# Djangoでは、名前空間を使用すると、ページの場所を特定することができる。それが名前空間を使ったURLと呼ばれる。
-# その名前空間の定義については、次の手順2のdatashare/urls.py編集に解説する。名前空間の使用により、URLの逆引き機能が形成される。
-# 　リスト3-5において、アプリdatashareにあるページindex.htmlとmypage.htmlが双方リンクし合うとき、
-# 'goto_mypage':'datashare:mypage'(行7)と'goto_index':'datashare:index'(行15)の名前空間が使われる。
-# こうした名前空間を利用したURLの逆引きは、通常のURLに関する詳細な記載は不要となり、記載ミスなどによる接続障害が避けられることで、
-# システムの安定性とコードの可読性が向上させた。
-# 　URLの逆引きはviews.py、datashare/urls.py、templates/index.htmlとtemplates/mypage.htmlの連携で実現されるので、
-# 次はその順に説明していく。
+# リスト3-13:datashare/views.py:56-75、3.4.2フォーム送信ためのビュークラスの作成
+class frmPublishView(TemplateView):
+    def __init__(self):
+        self.parmas= {
+            "title":"地理空間情報の共有サイト",
+            "msg":"これは、投稿ページです。",
+            "form":frmPublish(),
+            "answer":None,
+            "goto_index":"datashare:index",
+        } 
+
+    def get(self, request):
+        return render(request, "datashare/frmPublish.html", self.parmas)
+
+    def post(self, request):
+        person = request.POST['name']
+        proj = request.POST['project']
+        cont = request.POST['contents']
+        self.params['answer'] = 'name=' + person + ', project=' + proj + ',contents=' + cont+ '.'
+        self.params['form'] = frmPublish(request.POST)
+        return render(request, "daashare/frmPublish.html", self.parmas)
+
+#【リスト3-13の解説】
+# 　まず、行2ではリスト3-122:datashare/forms.pyで作成したfrmPublishフォームクラスをインポートする。
+# 続いて、行3は継承するための上位クラスTemplateViewをインポートする。
+# 　次の関数__init__(self)は、Pythonクラスの初期関数であり、クラスインスクンスが作成されたときに、自動的に実行される関数である。
+# ここで、self.parmasの変数を用いて、これまでと同じように、必要な変数とその値を用意する(行58～行64)。
+# 　関数get()は、これまでの静的な配信コードと同じように、関数render()を用いてself.parmasの情報をテンプレートのpublish.htmlへ渡す(行66～行67)。
+# 一方、関数post()は、関数request.POST()を用いて、ユーザがフォームに記述した情報を取得する(行70～行73)。
+# 行74は、ユーザの回答を編集し、変数parmas['answer']へ渡す。また、フォームフィールドに記述情報が残されたままの状態で、
+# フォームfrmPublish()を変数parmas['form']へ渡す。最後に、こうしたユーザ記述した情報self.parmasをもう一度テンプレートのpublish.htmlに送る(行75)。
