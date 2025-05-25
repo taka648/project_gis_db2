@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html lang="ja">
-    <head>
-        <meta charset="utf-8">
-        <title>{{ title }}</title>
-    </head>
-    <body>
-        <h1>{{ title }}</h1>
-        <p>{{ msg }}</p>
-        <p><a href="{% url goto_index %}">Indexへ戻る</a></p>
-    </body>
-</html>
-<!-- リスト3-7:datashare/mypage.htmlの新規作成 -->
+{% extends 'datashare/base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block contents %}
+    <p>{{ msg }}</p>
+    <p><a href="{% url goto_index %}">Indexへ戻る</a></p>
+{% endblock %}
+
+<!-- リスト3-11:datashare/templates/datashare/mypage.html -->

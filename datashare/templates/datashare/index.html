@@ -1,20 +1,8 @@
-<!DOCTYPE html>
-<html lang="ja">
-    <head>
-        <meta charset="utf-8">
-        <title>{{ title }}</title>
-    </head>
-    <body>
-        <h1>{{ title }}</h1>
-        <p>{{ msg }}</p>
-        <!-- リスト3-8:追加 -->
-        <p><a href="{% url goto_mypage %}">My Pageへ戻る</a></p>
-    </body>
-</html>
+{% extends 'datashare/base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block contents %}
+    <p>{{ msg }}</p>
+    <p><a href="{% url goto_mypage %}">My Pageへ</a></p>
+{% endblock %}
 
-<!-- リスト3-4:datashare/template/datashre/index.html -->
-<!-- 3.3.1 初めてのDjangoアプリの作成、(3-2)ステップ2:HTMLファイルヘのコード記入 -->
-<!-- リスト3-1:datashare/views.pyの行8の構文return render(request, 'datashare/index.html', params)の実行結果がここに反映されている。 -->
-<!-- 辞書型の変数parmasには、'title'と'msg'の要索があり(リスト3-1の行4～行7)、関数render()を用いて、 -->
-<!-- 変数parmasに記述されている文字情報をテンプレートのdatashare/index.htmlへ渡す。リスト3-4のHTML構文には、 -->
-<!-- 変数parmasの要素を記号{{ title }}と{{ msg }}の形で埋め込んでいる。 -->
+<!-- リスト3-10:datashare/templates/datashare/index.html -->
