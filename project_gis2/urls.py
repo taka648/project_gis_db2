@@ -1,6 +1,9 @@
-# リスト3-2:project_gis/urls.py。3.3.1 初めてのDjangoアプリの作成、(2)手順2:ルーティングproject_gis/urls.pyへの追加
+# リスト4-9:project_gis/urls.py。(2)手順2:ルーティングファイルヘの追記項目
+from django.conf import settings
+from django.conf.urls.static import static
+
 from django.contrib import admin
-# リスト3-2:includeを追加
+# リスト3-2:project_gis/urls.py。3.3.1 初めてのDjangoアプリの作成、(2)手順2:ルーティングproject_gis/urls.pyへの追加
 from django.urls import path, include
 
 urlpatterns = [
@@ -8,6 +11,10 @@ urlpatterns = [
     # リスト3-2:追加
     path('datashare/', include('datashare.urls')),
 ]
+
+# リスト4-9:project_gis/urls.py。(2)手順2:ルーティングファイルヘの追記項目
+#if settings.DEBUG:
+#    urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 
 # (2)手順2:ルーティングproject_gis/urls.pyへの追加とdatashare/urls.py(リスト3-3)の新規作成
 # 　Djangoのルーティングは、ユーザのURLを認識し、処理経路を制御するための仕組みである(表3-1)。

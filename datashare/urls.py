@@ -1,15 +1,22 @@
+# リスト4-17:追加。4.5.2 情報発信とファイルアップロードの機能実装、(3)手順3:
+# リスト4-14:datashare/urls.py。4.5.1 情報表示とファイルダウンロードの機能実装、(2)手順2:記述追加
 # リスト3-6:datashare/urls.py。3.3.2 複数ページのWebアプリのつながり、(2)手順2:urls.pyの編集
 # リスト3-3:datashare/urls.py。3.3.1 初めてのDjangoアプリの作成、(2)手順2:ルーティングdatashare/urls.py(リスト3-3)の新規作成
 from django.urls import path
 from . import views
 
 app_name = "datashare"
+
 urlpatterns = [
    path("", views.index, name="index"),
    # リスト3-6:追加
    path("mypage/", views.mypage_funView, name="mypage"),
    # リスト3-14:追加、3.4.3 フォームビュークラスに紐付ける
-   path('frmPublish/', views.frmPublishView.as_view(), name='frmPublish')
+   path("frmPublish/", views.frmPublishView.as_view(), name="frmPublish"),
+   # リスト4-14:追加
+   path("mypage_db/", views.mypage_dbView.as_view(), name="mypage_db"),
+   # リスト4-17:追加。4.5.2 情報発信とファイルアップロードの機能実装、(3)手順3:
+   path("publish_db/", views.publish_byModelfrmView, name="publish_db"),
 ]
 
 # (2)手順2:ルーティングproject_gis/urls.pyへの追加とdatashare/urls.py(リスト3-3)の新規作成
@@ -35,10 +42,17 @@ urlpatterns = [
 # http://localhost:8000/datashare/mypage/
 # の代わりに定形の「アプリ名」:「ページ名」を使うと、コードの簡潔性と可読性を格段に向上させることになる。
 # 多数のページを有する複雑なアプリケーションにおいては名前空間の利用を勧める。
-
+#
 #【リスト3-14の解説】
 # 　アプリのルーティングurls.pyファイルにおいて、フォーム処理するためのpath()を追加する。
 # リスト3-14の行9のように、関数path()の3つの引数を記述する。
 # URLパターンは'publish/'に、namespaceはname='publish'で設定するが、第2引数はこれまでとやや異なる。
 # 行7と行8は、それぞれviewsの関数indexとmypageを紐付けるために、views.indexとviews.mypageで記述した。
 # 今回のfrmPublishViewは、viewsの関数ではなくクラスであるので、frmPublishView.as_view()の記述でフォーラムクラスと紐付ける。
+#
+#【リスト4-14の解説】
+# 　次は、URLとviewの紐付けを定義する。アプリケーションdatashareのurls.pyに、行10のpath関数を追加する。
+# URLのdatashare/mypage_db/がリクエストされたとき、URLパターンのマッチングにより、行10の関数pathの第1引数の'mypage_db'が照会される。
+# それによって、第2引数に記載されるviewクラスとの紐付けの指示により、リスト4-13のmypage_dbViewが参照される。
+# また、第3引数のname='mypage_db'は、次の手順で作成するマイページmypage_db.htmlの名前をmypage_dbと定義し、名前空間URLの定形datashare:mypage_dbに使われる。
+#

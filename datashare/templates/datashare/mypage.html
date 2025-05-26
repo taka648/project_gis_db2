@@ -2,7 +2,18 @@
 {% block title %}{{ title }}{% endblock %}
 {% block contents %}
     <p>{{ msg }}</p>
-    <p><a href="{% url goto_index %}">Indexへ戻る</a></p>
+    <p><a href="{% url 'datashare:index' %}">Indexへ戻る</a></p>
+
+    <p><a href="{% url 'datashare:frmPublish' %}">投稿Pageへ</a></p>
+    <p><a href="{% url 'datashare:mypage_db' %}">My Page(DB接続)へ</a></p>
 {% endblock %}
 
 <!-- リスト3-11:datashare/templates/datashare/mypage.html -->
+    <!-- リスト図4-36:マイページ -->
+    <!-- <p><a href="{% url goto_index %}">Indexへ戻る</a></p> -->
+    <!-- <p><a href="{% url goto_frmPublish %}">投稿Pageへ</a></p> -->
+    <!-- <p><a href="{% url goto_frmPublish %}">投稿ページへ</a></p> -->
+    <!-- <p><a href="{% url goto_mypage_db %}">My Pageへ(DB接続)</a></p> -->
+    <!-- <p><a href="{% url goto_index %}">Indexへ戻る</a></p> -->
+    <!-- <p><a href="{% url 'datashare:frmPublish' %}">投稿Pageへ</a></p> -->
+    <!-- <p><a href="{% url 'datashare:mypage_db' %}">My Pageへ(DB接続)</a></p> -->

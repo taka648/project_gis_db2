@@ -1,3 +1,7 @@
+# リスト4-8:修正。(1-B)アプリの言語、時間とアップロードファイル保存先に関する環境設定
+# import
+import os
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -12,6 +16,7 @@ SECRET_KEY = "django-insecure-#@gvrw@&el(%ejf=v_xn^p(=jpow2#6dhoa7g0nje1bxd^g_dm
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+#DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -103,21 +108,28 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
-
-TIME_ZONE = "UTC"
+# リスト4-8:修正。(1-B)アプリの言語、時間とアップロードファイル保存先に関する環境設定
+# LANGUAGE_CODE = "en-us"
+# TIME_ZONE = "UTC"
+LANGUAGE_COOE = "ja"
+TIME_ZONE = "Asia/Tokyo"
 
 USE_I18N = True
-
 USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "static/"
+# リスト4-8:修正。(1-B)アプリの言語、時間とアップロードファイル保存先に関する環境設定
+# STATIC_URL = "static/"
+STATIC_URL = "/static/"
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+# リスト4-8:修正。(1-B)アプリの言語、時間とアップロードファイル保存先に関する環境設定
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
