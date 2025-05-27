@@ -49,6 +49,26 @@ def publish_byModelfrmView(request):
     }
     return render(request, "datashare/publish_db.html", parmas)
 
+# リスト4-21:datashare/views.py、新規追加。4.5.3 情報更新と削除の機能実装、(1)手順1:
+def edit(request, num):
+    obj= pub_message.objects.get(id=num)
+    if (request.method == "POST"):
+        if "btn_update" in request.POST:
+            form = frmModelPublish(request.POST, instance=obj)
+            form.save()
+            return redirect("datashare:mypage_db")
+        elif "btn_delete" in request.POST:
+            obj.delete()
+            return redirect("datashare:mypage_db")
+        elif "btn_back" in request.POST:
+            return redirect("datashare:mypage_db")
+    parmas = {
+        "title":"地理空間情報の共有サイト",
+        "msg":"これは投稿の編集サイトです。",
+        "id":num,
+        "form":frmModelPublish(instance=obj),
+    } 
+    return render(request, "datashare/edit.html", parmas)
 
 # リスト4-13:新規作成
 class mypage_dbView(TemplateView):
@@ -107,3 +127,16 @@ class frmPublishView(TemplateView):
 # 　ここで、モデルとの連携により、form.saveだけでフォームフィールドに入力されたデータをデータベースに格納できる。
 # 　最後の変数parmasには、投稿ページpublish_db.htmlへ渡す情報をまとめている(行86～行91)。
 # 最後に、変数parmasの情報を投稿ページへ渡す(行92)。
+#
+#【リスト4-21の解説】
+# 　アフリケーションdatashareのviews.pyにedit関数を追記する(行92)。
+# マイページの編集用ボタン(図4-41)がクリックされたとき、投稿情報のIDが関数の引数[num]から取得されている(行92)。
+# このnumを用いて、行93の[pub_message.objects.get(id=num)]でテーブルから該当のレコードを抽出し、
+# 変数objに入れる。次の条件文(行94～行103)には、図4-42の3つのボタンが押された時の処理を記述されている。
+# まず、「変更」が押されたとき、[btn_update]のメッセージが送られる(行95)。
+# そのとき、フォーム画面に入力された情報をformに入れ、form.saveでデータベースヘ格納する。
+# その後、マイページへ戻る(行96～行98)。
+# [削除]ボクンが押され、[btn_delete]が送られられ(行99)、[obj.delete()]で該当のレコードを削除し、
+# マイページヘ戻る(行100～行101)。
+# 最後に、[戻る]ボタンが押され、[btn_back]が送られたら(行102)、直ちにマイページヘ戻る(行103)。
+# それ以下のコードは、これまでと同じく、変数parmasの情報を編集ページedit.htmlへ渡す。

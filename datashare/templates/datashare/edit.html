@@ -1,0 +1,20 @@
+{% extends 'datashare/base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block contents %}
+    <p>{{ msg }}</p>
+    <p>{{ answer | safe }}</p>
+    <form action="{% url 'datashare:edit' id %}" method="post">
+        {% csrf_token %}
+        <p>ID = {{ id }}</p>
+        <table>
+            {{ form.as_table }}
+            <tr><th><td> 
+                <input type="submit" value=“更新" name="btn_update">
+                <input type="submit" value=“削除" name="btn_delete">
+                <input type="submit" value=“戻る" name="btn_back">
+            </td></th></tr>
+        </table>
+    </form>
+{% endblock %}
+
+<!-- リスト4-24:新規作成。4.5.3 情報更新と削除の機能実装、(4)手順4:edit.htmlの新規作成 -->

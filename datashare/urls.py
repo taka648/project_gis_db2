@@ -17,6 +17,8 @@ urlpatterns = [
    path("mypage_db/", views.mypage_dbView.as_view(), name="mypage_db"),
    # リスト4-17:追加。4.5.2 情報発信とファイルアップロードの機能実装、(3)手順3:
    path("publish_db/", views.publish_byModelfrmView, name="publish_db"),
+   # リスト4-22:datnshare/urls.py。追加。4.5.3 情報更新と削除の機能実装、(2)手順2:
+   path("edit/<int:num>", views.edit, name="edit"),
 ]
 
 # (2)手順2:ルーティングproject_gis/urls.pyへの追加とdatashare/urls.py(リスト3-3)の新規作成
@@ -55,4 +57,10 @@ urlpatterns = [
 # URLのdatashare/mypage_db/がリクエストされたとき、URLパターンのマッチングにより、行10の関数pathの第1引数の'mypage_db'が照会される。
 # それによって、第2引数に記載されるviewクラスとの紐付けの指示により、リスト4-13のmypage_dbViewが参照される。
 # また、第3引数のname='mypage_db'は、次の手順で作成するマイページmypage_db.htmlの名前をmypage_dbと定義し、名前空間URLの定形datashare:mypage_dbに使われる。
+#
+#【リスト4-22の解説】
+# 　リスト4-22の行12には、編集ページヘのURLのpath()を設定する。
+# これまでと同じ構造であるが、第1引数は['edit/<int:num>']のように指定する。つまり、URLに該当レコードの番号が付けられる。
+# 例えば、図4-39の画面に、[Edit ID = 2]のレコードが押された場合、
+# [http://localhost:80OO/datashare/edit/2]のURLで編集ページを呼ぶことになる。
 #
