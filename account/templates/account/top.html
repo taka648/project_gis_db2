@@ -1,0 +1,9 @@
+{% extends "account/base.html" %}
+{% block title %}Top Page{% endblock %}
+{% block contents %}
+    <h2>Top Page</h2>
+        <p>ようこそ、{{ user.username }} さん</p>
+        <p>{{ user.username }}さんのPKは{{ user.pk }}番です。</p>
+{% endblock %} 
+
+<!-- リスト4-33:新規作成。4.6.1 ユーザ認証のテスト実装、(7)手順7: -->

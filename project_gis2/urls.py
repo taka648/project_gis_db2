@@ -9,7 +9,9 @@ from django.urls import path, include
 urlpatterns = [
     path("admin/", admin.site.urls),
     # リスト3-2:追加
-    path('datashare/', include('datashare.urls')),
+    path("datashare/", include("datashare.urls")),
+    # リスト4-28:追加。4.6.1 ユーザ認証のテスト実装、(3)手順3:
+    path("account/", include("account.urls"))
 ]
 
 # リスト4-9:project_gis/urls.py。(2)手順2:ルーティングファイルヘの追記項目

@@ -19,6 +19,9 @@ urlpatterns = [
    path("publish_db/", views.publish_byModelfrmView, name="publish_db"),
    # リスト4-22:datnshare/urls.py。追加。4.5.3 情報更新と削除の機能実装、(2)手順2:
    path("edit/<int:num>", views.edit, name="edit"),
+   # リスト4-38:追加。4.6.2 アプリケーションdatashareにおけるユーザ認証機能の実装、(3)手順3:
+   path('login/', views.MyLoginView.as_view(), name = 'login'),
+   path('logout/', views.MyLogoutView.as_view(), name= 'logout'),
 ]
 
 # (2)手順2:ルーティングproject_gis/urls.pyへの追加とdatashare/urls.py(リスト3-3)の新規作成

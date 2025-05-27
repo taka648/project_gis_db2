@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head> 
+        <meta charset="utf-8">
+        <title>Login to MyPage</title>
+    </head> 
+    <body> 
+        <h1>地理空間情報の共有サイト</h1>
+        <h1>Login to MyPage</h1>
+        <form action="", method="post">
+            <!-- 特定のフィールドに紐づかないエラーを表示する -->
+            {{ form.non_field_errors }}
+            {% for field in form %}
+                {{ field }}
+                {{ field.errors }}
+                <br>
+            {% endfor %}
+            <button type="submit">Login</button>
+            <input type="hidden" name="nest" value="{{ nest }}" />
+            {% csrf_token %}
+       </form>
+    </body>
+</html>
+
+<!-- リスト4-39:datashare/login.html新規作成 -->

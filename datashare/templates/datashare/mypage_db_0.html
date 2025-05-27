@@ -1,9 +1,7 @@
 {% extends 'datashare/base.html' %}
 {% block title  %}{{ title }}{% endblock %}
 {% block contents %}
-    <!-- リスト4-40:ユーザー情報表示の追加 -->
-    <!-- <p>{{ msg | safe }}</p> -->
-    <p>これは{{ user.username | safe }}のサイトです(DB接続)。</p>
+    <p>{{ msg | safe }}</p>
     <table border="1" style="border-collapse: collapse; border-color: ■000000">
         <tr>
             <th>ID</th>
@@ -30,8 +28,6 @@
     </table>
     <p>
         <a href="{% url 'datashare:publish_db' %}">投稿サイト(DB接続)へ</a>
-        <!-- リスト4-40:ログアウトページヘのリンク追加 -->
-        <a href="{% url goto_logout %}">Logoutへ</a>
     </p>
 {% endblock %}
 

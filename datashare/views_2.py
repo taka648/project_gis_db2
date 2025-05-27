@@ -7,20 +7,11 @@ from django.shortcuts import redirect, render
 # リスト4-13:frmModelPublish追加
 # from datashare.forms import frmPublish, frmModelPublish
 from datashare.forms import frmPublish
-
-# リスト4-37:追加。4.6.2 アプリケーションdatashareにおけるユーザ認証機能の実装、手順2:
-from django.contrib.auth.mixins import LoginRequiredMixin
-
 from django.views.generic import TemplateView
 # リスト4-13:追加
 from .models import pub_message
-
-# リスト4-37:追加。4.6.2 アプリケーションdatashareにおけるユーザ認証機能の実装、手順2:
-from django.contrib.auth.views import LoginView, LogoutView
-
 # リスト4-17:追加
-#from .forms import frmModelPublish
-from .forms import frmModelPublish, LoginForm # リスト4-37:LoginForm追加
+from .forms import frmModelPublish
 
 def index(request):
     parmas = {
@@ -79,24 +70,17 @@ def edit(request, num):
     } 
     return render(request, "datashare/edit.html", parmas)
 
-# リスト4-17:追加。4.5.2 情報発信とファイルアップロードの機能実装、(2)手順2:
 # リスト4-13:新規作成
-class mypage_dbView(LoginRequiredMixin, TemplateView): # リスト4-37:(1)LoginRequiredMixin追加
+class mypage_dbView(TemplateView):
     template_name = 'datashare/mypage_db.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # リスト4-37:追加。(2)ユーザ情報の取得
-        context["user"] = self.request.user
-        context["pub_message_list"] = pub_message.objects.all().order_by("id")
+        context['pub_message_list'] = pub_message.objects.all().order_by('id')
 
-        context["title"] = "地理空間データの共有サイト"
-        context["msg"] = "これはマイページ(DB接続)です"
-
-        context["goto_publish_db"] = "datashare:publish db"
-        # リスト4-37:(3)ログアウトページヘのリンク追加修正
-        #context["goto_index"] = "datashare:index"
-        context['goto_logout'] = 'datashare:logout'
+        context['title'] = '地理空間データの共有サイト'
+        context['msg'] = 'これはマイページ(DB接続)です'
+        context['goto_index'] = 'datashare:index'
         return context
 
 # リスト3-13:datashare/views.py:56-75、3.4.2フォーム送信ためのビュークラスの作成
@@ -120,16 +104,6 @@ class frmPublishView(TemplateView):
         self.params['answer'] = 'name=' + person + ', project=' + proj + ',contents=' + cont+ '.'
         self.params['form'] = frmPublish(request.POST)
         return render(request, "daashare/frmPublish.html", self.parmas)
-
-# リスト4-37:追加。4.6.2 アプリケーションdatashareにおけるユーザ認証機能の実装、手順2:
-# それぞれログインページとログアウトページヘの紐付けを設定する。
-class MyLoginView(LoginView):
-    form_class = LoginForm
-    template_name = "datashare/login.html"
- 
-class MyLogoutView(LogoutView):
-    template_name = "datashare/logout.html"
-
 
 #【リスト3-13の解説】
 # 　まず、行2ではリスト3-122:datashare/forms.pyで作成したfrmPublishフォームクラスをインポートする。
@@ -166,14 +140,3 @@ class MyLogoutView(LogoutView):
 # マイページヘ戻る(行100～行101)。
 # 最後に、[戻る]ボタンが押され、[btn_back]が送られたら(行102)、直ちにマイページヘ戻る(行103)。
 # それ以下のコードは、これまでと同じく、変数parmasの情報を編集ページedit.htmlへ渡す。
-#
-#【リスト4-37の解説】
-# 　リスト4-30:account/views.pyを参照し、datashare/views.pyに値する修正と追加を行った。
-# まず、ユーザ認証に必要なフォームクラス、モデルとコンポーネントをインポートする(行3、行6と行7)。
-# 次は、マイページmypage_dbView()に対し、
-# (1)ユーザ認証LoginRequiredMixinの記述追加(行27)、
-# (2)ログインが成功したとき、ユーザ情報の取得(行32)、
-# (3)ログアウトページヘのリンク追加(行38)、
-# の3つの追加記述を行う。
-# 行98～行103の記述は、リスト4-30と同様、それぞれログインページとログアウトページヘの紐付けを設定する。
-

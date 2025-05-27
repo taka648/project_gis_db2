@@ -137,10 +137,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # リスト4-8:修正。(1-B)アプリの言語、時間とアップロードファイル保存先に関する環境設定
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-
 # リスト4-27:追加。4.6.1 ユーザ認証のテスト実装、(2)手順2:
-#LOGIN_URL = "account:login"
-#LOGIN_REDIRECT_URL = "account:top"
-# リスト4-42:変更。4.6.2 アプリケーションdatashareにおけるユーザ認証機能の実装、(5)手順5:
-LOGIN_URL = 'datashare:login'
-LOGIN_REDIRECT_URL = 'datashare:mypage_db' #リスト4-42:変更
+LOGIN_URL = "account:login"
+LOGIN_REDIRECT_URL = "account:top"

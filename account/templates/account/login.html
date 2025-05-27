@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ja"> 
+    <head>
+        <meta charset="utf-8">
+        <title>Login to Top Page</title>
+    </head>
+
+    <body>
+        <h1>地理空間情報の共有サイト</h1>
+        <h1>Login to Top Page</h1>
+        <form action="{% url 'account:login' %}" method="post">
+            <!-- {{ csrf_token }} -->
+            {{ form.as_p }} 
+            <button type="submit">Login</button>
+            <input type="hidden" name="next" value="{{ next }}" />
+            {% csrf_token %}
+        </form>
+    </body>
+</html>
+
+<!-- リスト4-34:新規作成。4.6.1 ユーザ認証のテスト実装、(7)手順7: -->
