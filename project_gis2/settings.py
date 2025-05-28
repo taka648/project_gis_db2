@@ -126,9 +126,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 # リスト4-8:修正。(1-B)アプリの言語、時間とアップロードファイル保存先に関する環境設定
-# STATIC_URL = "static/"
+#STATIC_URL = "static/"
 STATIC_URL = "/static/"
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

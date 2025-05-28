@@ -1,0 +1,12 @@
+ul {
+    margin-left: 0em;
+    padding-left: 0em;
+} 
+
+ul li {
+    padding-left: 0em;
+    float:left;
+    margin-left: 2em;
+    list-style-type: none;
+}
+

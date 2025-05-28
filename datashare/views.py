@@ -79,24 +79,41 @@ def edit(request, num):
     } 
     return render(request, "datashare/edit.html", parmas)
 
+# リスト4-37:(1)LoginRequiredMixin追加
 # リスト4-17:追加。4.5.2 情報発信とファイルアップロードの機能実装、(2)手順2:
 # リスト4-13:新規作成
-class mypage_dbView(LoginRequiredMixin, TemplateView): # リスト4-37:(1)LoginRequiredMixin追加
-    template_name = 'datashare/mypage_db.html'
+class mypage_dbView(LoginRequiredMixin, TemplateView):
+    template_name = "datashare/mypage_db.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # リスト4-37:追加。(2)ユーザ情報の取得
         context["user"] = self.request.user
-        context["pub_message_list"] = pub_message.objects.all().order_by("id")
+        # リスト4-43:追加。SQL文1:認証成功者が共有できるレコードの抽出
+        user_id = self.request.user.id
+        sql = "select * from datashare_pub_message"
+        sql += " where project_id in"
+        sql += " ( select distinct group_id as project_id from auth_user_groups" 
+        sql += " where user_id = " + str(user_id) + ")"
+
+        #context["pub_message_list"] = pub_message.objects.all().order_by("id")
+        context["pub_message_list"] = pub_message.objects.raw(sql)
+
+        # リスト4-43:追加。SQL文2:認証成功者の参加プロジェクトの抽出
+        sql = "select * from auth_group"
+        sql += " where id in (select distinct group_id from auth_user_groups"
+        sql += " where user_id = " +str(user_id) + ")"
+        my_project = pub_message.objects.raw(sql)
+        context["my_project"] = my_project
 
         context["title"] = "地理空間データの共有サイト"
-        context["msg"] = "これはマイページ(DB接続)です"
+        #context["msg"] = "これはマイページ(DB接続)です"
 
         context["goto_publish_db"] = "datashare:publish db"
         # リスト4-37:(3)ログアウトページヘのリンク追加修正
         #context["goto_index"] = "datashare:index"
         context['goto_logout'] = 'datashare:logout'
+
         return context
 
 # リスト3-13:datashare/views.py:56-75、3.4.2フォーム送信ためのビュークラスの作成
@@ -176,4 +193,34 @@ class MyLogoutView(LogoutView):
 # (3)ログアウトページヘのリンク追加(行38)、
 # の3つの追加記述を行う。
 # 行98～行103の記述は、リスト4-30と同様、それぞれログインページとログアウトページヘの紐付けを設定する。
-
+#
+#【リスト4-43の解説】
+# 　これまで、pub_message.object.all()
+# (リスト4-13:datashare/views.py)
+# と
+# pub_message.object.get(id=num)(リスト4-21:datashare/views.py)
+# で、それぞれテーブルpub_messageからすべてのレコードと1つのレコードを抽出してきた。
+# 　しかし今回は、単ーなテーブルではなく、
+# pub_message
+# と
+# auth_user_group、
+# さらに
+# auth_user_groupとauth_user、
+# それぞれの複合SQL構文で、レコードを抽出することになる。
+# こうした複雑なSQLクエリを対応するためには、pub_message.object.raw(sql)(行40と行46)を用いて、
+# SQLクエリを直接に使うことが可能である。それぞれのSQL構文は以下のようになる。
+# ■SQL文1:認証成功者が共有できるレコードの抽出
+# select * from datashare_pub_message
+# where project_id in
+# (select distinct group_id as project_id
+# from auth_user_group
+# where user_id = (認証成功者のid)
+#---
+# ■SQL文2:認証成功者の参加プロジェクトの抽出
+# select * from autho_group 
+# where id in
+# (select distinct group_id as auth_user_group
+# where user_id = (認証成功者のid)
+# ---
+#　それらのSQL構文を、Pythonの文字変数sqlに人れ、pub_message.object.raw(sql)で実行する(行34～行47)。
+#

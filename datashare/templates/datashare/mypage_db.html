@@ -4,6 +4,13 @@
     <!-- リスト4-40:ユーザー情報表示の追加 -->
     <!-- <p>{{ msg | safe }}</p> -->
     <p>これは{{ user.username | safe }}のサイトです(DB接続)。</p>
+    <ul> <!-- リスト4-46:追加 -->
+        <li>所属プロジェクト:</li>
+        {% for itme in my_project %}
+            <li>☑{{ itme.name }}</li> 
+        {% endfor %}
+    </ul> 
+
     <table border="1" style="border-collapse: collapse; border-color: ■000000">
         <tr>
             <th>ID</th>
